@@ -1,6 +1,6 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import { getDatabase, ref, push, onChildAdded, set, get } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,11 +15,56 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const database = getDatabase(app);
 
-console.log('Firebase initialized:', app);
+// Handle user state
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is signed in
+        console.log(`User signed in: ${user.email}`);
+        document.getElementById('authContainer').style.display = 'none';
+        document.getElementById('chatContainer').style.display = 'block';
+    } else {
+        // No user is signed in
+        document.getElementById('authContainer').style.display = 'block';
+        document.getElementById('chatContainer').style.display = 'none';
+    }
+});
 
-// Element selection
+// Sign up
+document.getElementById('signupButton').addEventListener('click', () => {
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log(`User signed up: ${user.email}`);
+            set(ref(database, 'users/' + user.uid), {
+                email: user.email,
+                nickname: userNickname
+            });
+        })
+        .catch((error) => {
+            console.error('Error signing up:', error);
+        });
+});
+
+// Log in
+document.getElementById('loginButton').addEventListener('click', () => {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log(`User logged in: ${user.email}`);
+        })
+        .catch((error) => {
+            console.error('Error logging in:', error);
+        });
+});
+
+// Chat functionality
 const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
 const sendButton = document.getElementById('sendButton');
@@ -27,7 +72,6 @@ const nicknameInput = document.getElementById('nicknameInput');
 const typingIndicator = document.getElementById('typingIndicator');
 
 let userNickname = '';
-
 nicknameInput.addEventListener('change', (event) => {
     userNickname = event.target.value;
     console.log(`Nickname set to: ${userNickname}`); // Debug log
@@ -49,19 +93,16 @@ function sendMessage() {
     const message = chatInput.value.trim();
     if (message && userNickname) {
         const timestamp = new Date().toISOString();
+        const user = auth.currentUser;
         console.log(`Sending message: ${message} at ${timestamp}`); // Debug log
-        const newMessageRef = push(chatRef, { nickname: userNickname, message, timestamp });
+        const newMessageRef = push(chatRef, {
+            nickname: userNickname,
+            message,
+            timestamp,
+            userId: user.uid
+        });
         newMessageRef.then(() => {
             console.log('Message sent successfully');
-            // Add status indicator to the sent message
-            const messageElement = document.createElement('div');
-            messageElement.textContent = `${userNickname}: ${message} (${timestamp})`;
-            const statusElement = document.createElement('div');
-            statusElement.className = 'message-status';
-            statusElement.textContent = 'Sent';
-            messageElement.appendChild(statusElement);
-            chatMessages.appendChild(messageElement);
-            chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the bottom
         }).catch((error) => {
             console.error('Error sending message:', error);
         });
