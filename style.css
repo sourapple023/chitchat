@@ -29,6 +29,17 @@ body {
     text-transform: lowercase; /* Lowercase text */
 }
 
+#typingIndicator {
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
 #chatMessages {
     max-height: 400px;
     overflow-y: auto;
@@ -40,12 +51,14 @@ body {
     color: #333;  /* Ensuring text color is visible */
 }
 
-#chatInput {
+#chatInput,
+#nicknameInput {
     width: calc(100% - 70px);
     padding: 10px;
     margin-right: 10px;
     border: 1px solid #ddd;
     font-size: 1rem;
+    margin-bottom: 10px; /* Added margin to separate inputs */
 }
 
 #sendButton {
@@ -59,4 +72,11 @@ body {
 
 #sendButton:hover {
     background: #0056b3;
+}
+
+.message-status {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: right;
+    margin-top: -5px;
 }
