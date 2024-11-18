@@ -5,7 +5,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #E8F5E9; /* Light, soft green that complements the logo color */
     font-family: 'Poppins', sans-serif;
 }
 
@@ -24,7 +24,9 @@ body {
     font-size: 2rem;
     text-align: center;
     margin-bottom: 20px;
-    color: #007bff;
+    color: #4CAF50; /* Softer, modern color */
+    font-weight: 500; /* Slightly lighter font weight */
+    text-transform: lowercase; /* Lowercase text */
 }
 
 #chatMessages {
@@ -35,6 +37,7 @@ body {
     border: 1px solid #ddd;
     background: #f9f9f9;
     font-size: 1rem;
+    color: #333;  /* Ensuring text color is visible */
 }
 
 #chatInput {
