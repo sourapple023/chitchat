@@ -20,6 +20,13 @@ body {
     font-size: 1rem;
 }
 
+.logo {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
 #chatMessages {
     max-height: 400px;
     overflow-y: auto;
