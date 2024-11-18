@@ -58,5 +58,6 @@ onChildAdded(chatRef, (snapshot) => {
     messageElement.textContent = `${data.timestamp}: ${data.message}`;
     console.log(`Received message: ${data.message} at ${data.timestamp}`); // Debug log
     chatMessages.appendChild(messageElement);
+    console.log(`Appended message to chatMessages div`); // Debug log
     chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the bottom
 });
