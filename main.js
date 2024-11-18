@@ -4,21 +4,32 @@ import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/fi
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCVfdo90fDEm3dh9AieWWn68woetCgW0_0",
-    authDomain: "multiplayergame-81674.firebaseapp.com",
-    projectId: "multiplayergame-81674",
-    storageBucket: "multiplayergame-81674.firebasestorage.app",
-    messagingSenderId: "180154918413",
-    appId: "1:180154918413:web:97e2b1d664a5fb95451744"
+    apiKey: "AIzaSyDO9rmvm6loulEodOpUwiqGDkQ8Ylc9ZIc",
+    authDomain: "chitchat-7a7ef.firebaseapp.com",
+    databaseURL: "https://chitchat-7a7ef-default-rtdb.firebaseio.com",
+    projectId: "chitchat-7a7ef",
+    storageBucket: "chitchat-7a7ef.firebasestorage.app",
+    messagingSenderId: "923823961908",
+    appId: "1:923823961908:web:d24bf3969af575f3f65761"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+console.log('Firebase initialized:', app);
+
+// Element selection
 const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
 const sendButton = document.getElementById('sendButton');
+
+console.log('Elements selected:', {
+    chatMessages,
+    chatInput,
+    sendButton
+});
+
 const chatRef = ref(database, 'chat'); // Reference for chat messages
 
 // Send chat message
