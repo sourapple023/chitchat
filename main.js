@@ -44,8 +44,8 @@ chatInput.addEventListener('input', () => {
     }, 1000); // Adjust timing as needed
 });
 
-// Send chat message
-sendButton.addEventListener('click', () => {
+// Function to send chat message
+function sendMessage() {
     const message = chatInput.value.trim();
     if (message && userNickname) {
         const timestamp = new Date().toISOString();
@@ -68,6 +68,16 @@ sendButton.addEventListener('click', () => {
         chatInput.value = ''; // Clear the input field
     } else {
         console.log('No message to send or nickname not set'); // Debug log
+    }
+}
+
+// Send chat message on button click
+sendButton.addEventListener('click', sendMessage);
+
+// Send chat message on pressing "Enter"
+chatInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        sendMessage();
     }
 });
 
